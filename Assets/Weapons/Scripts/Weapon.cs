@@ -14,6 +14,12 @@ public class Weapon : MonoBehaviour
     public AudioClip MissSound;
 
     private EnemyScript _thisEnemy;
+    private AudioSource _audioSource;
+
+    void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+    }
 
     public void SimpleAttack()
     {
@@ -29,13 +35,22 @@ public class Weapon : MonoBehaviour
                     _thisEnemy.Death();
 
                 Debug.Log(_thisEnemy.HealthPoints);
+
+                _audioSource.clip = HitSound;
+                _audioSource.Play();
             }
             Debug.Log("Did Hit");
+
+            _audioSource.clip = MissSound;
+            _audioSource.Play();
         }
         else
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white,5);
             Debug.Log("Did not Hit");
+
+            _audioSource.clip = MissSound;
+            _audioSource.Play();
         }
     }
 
