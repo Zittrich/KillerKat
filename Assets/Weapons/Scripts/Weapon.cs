@@ -4,60 +4,81 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public int LightAttackRange;
-    public int LightAttackDamage;
+    public int ItemID;
 
-    public int HeavyAttackRange;
-    public int HeavyAttackDamage;
+    public float PrimaryAttackRange;
+    public int PrimaryAttackDamage;
+    public float PrimaryCooldown;
 
-    public AudioClip HitSound;
-    public AudioClip MissSound;
+    public float SecondaryAttackRange;
+    public int SecondaryAttackDamage;
+    public float SecondaryCooldown;
 
+    public AudioClip[] HitSound;
+    public AudioClip[] MissSound;
+
+    private float _lastTime;
     private EnemyScript _thisEnemy;
     private AudioSource _audioSource;
+    private System.Random _random = new System.Random();
 
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+        _lastTime = float.MinValue;
     }
 
-    public void SimpleAttack()
+    public void PrimaryAttack()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, LightAttackRange))
+        if(_lastTime + PrimaryCooldown <= Time.time)
         {
-            if (hit.transform.gameObject.GetComponent<EnemyScript>())
+            _lastTime = Time.time;
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
+                    PrimaryAttackRange))
             {
-                
-                _thisEnemy = hit.transform.gameObject.GetComponent<EnemyScript>();
-                _thisEnemy.HealthPoints -= LightAttackDamage;
-                if (_thisEnemy.HealthPoints <= 0)
-                    _thisEnemy.Death();
+                if (hit.transform.gameObject.GetComponent<EnemyScript>())
+                {
 
-                Debug.Log(_thisEnemy.HealthPoints);
+                    _thisEnemy = hit.transform.gameObject.GetComponent<EnemyScript>();
 
-                _audioSource.clip = HitSound;
+                    _thisEnemy.HealthPoints -= PrimaryAttackDamage;
+                    if (_thisEnemy.HealthPoints <= 0)
+                        _thisEnemy.Death();
+
+                    Debug.Log(_thisEnemy.HealthPoints);
+
+                    _audioSource.clip = HitSound[_random.Next(0, HitSound.Length - 1)];
+                    _audioSource.Play();
+
+                    Debug.Log("Did Hit");
+                }
+                else
+                {
+                    _audioSource.clip = MissSound[_random.Next(0, MissSound.Length - 1)];
+                    _audioSource.Play();
+                    Debug.Log("Did not Hit");
+                }
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white, 5);
+                Debug.Log("Did not Hit");
+
+                _audioSource.clip = MissSound[_random.Next(0, MissSound.Length - 1)];
                 _audioSource.Play();
             }
-            Debug.Log("Did Hit");
-
-            _audioSource.clip = MissSound;
-            _audioSource.Play();
         }
         else
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white,5);
-            Debug.Log("Did not Hit");
-
-            _audioSource.clip = MissSound;
-            _audioSource.Play();
+            CooldownTrigger();
         }
     }
 
-    public void HardAttack()
+    public void SecondaryAttack()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, HeavyAttackRange))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, SecondaryAttackRange))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             Debug.Log("Did Hit");
@@ -67,5 +88,10 @@ public class Weapon : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
             Debug.Log("Did not Hit");
         }
+    }
+
+    private void CooldownTrigger()
+    {
+        Debug.Log(_lastTime + PrimaryCooldown - Time.time);
     }
 }

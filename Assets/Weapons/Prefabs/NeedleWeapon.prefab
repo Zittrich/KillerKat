@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7572f964829083e469e73c639f040cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LightAttackRange: 100
-  LightAttackDamage: 10
-  HeavyAttackRange: 100
-  HeavyAttackDamage: 20
+  PrimaryAttackRange: 10
+  PrimaryAttackDamage: 10
+  SecondaryAttackRange: 10
+  SecondaryAttackDamage: 20
   HitSound: {fileID: 8300000, guid: 03e3bd08a6e70684dbe299a3e185fdd2, type: 3}
   MissSound: {fileID: 8300000, guid: c4d8928c75c21af43998193f0f038429, type: 3}
 --- !u!23 &370538029606763135

@@ -2,19 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization.Json;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 
 public class WeaponsController : MonoBehaviour
 {
     [SerializeField] public List<Weapon> WeaponList;
+
+    [SerializeField] internal string json;
+
     internal int _selectedWeapon;
-    private GameObject Hand;
+    private GameObject _hand;
 
     void Start()
     {
         try
         {
-            Hand = GetComponentInChildren<HandScript>().gameObject;
+            _selectedWeapon = FindObjectOfType<GameHandler>().selectedLoadout;
+        }
+        catch
+        {
+            _selectedWeapon = 0;
+        }
+
+        try
+        {
+            _hand = GetComponentInChildren<HandScript>().gameObject;
         }
         catch (Exception handDoesNotExist)
         {
@@ -33,12 +48,12 @@ public class WeaponsController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            WeaponList[_selectedWeapon].SimpleAttack();
+            WeaponList[_selectedWeapon].PrimaryAttack();
         }
 
         if (Input.GetButtonDown("Fire2"))
         {
-            WeaponList[_selectedWeapon].HardAttack();
+            WeaponList[_selectedWeapon].SecondaryAttack();
         }
 
         if (Input.GetButtonDown("Switch"))

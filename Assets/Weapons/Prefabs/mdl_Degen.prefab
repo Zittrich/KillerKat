@@ -208,12 +208,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5f842d938a7d04189cb7c077097a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LightAttackRange: 100
-  LightAttackDamage: 10
-  HeavyAttackRange: 100
-  HeavyAttackDamage: 20
-  HitSound: {fileID: 8300000, guid: 03e3bd08a6e70684dbe299a3e185fdd2, type: 3}
-  MissSound: {fileID: 8300000, guid: c4d8928c75c21af43998193f0f038429, type: 3}
+  ItemID: 1
+  PrimaryAttackRange: 10
+  PrimaryAttackDamage: 10
+  PrimaryCooldown: 0
+  SecondaryAttackRange: 10
+  SecondaryAttackDamage: 20
+  SecondaryCooldown: 0
+  HitSound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  MissSound:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!82 &2173355429753738721
 AudioSource:
   m_ObjectHideFlags: 0
