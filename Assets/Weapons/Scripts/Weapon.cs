@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,16 @@ public class Weapon : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _lastTime = float.MinValue;
-        _weaponSource = GetComponentInChildren<WeaponSource>();
+
+        try
+        {
+            _weaponSource = GetComponentInChildren<WeaponSource>();
+        }
+        catch (Exception weaponSourceNotDefined)
+        {
+            Debug.Log(weaponSourceNotDefined);
+            throw;
+        }
     }
 
     public void PrimaryAttack()

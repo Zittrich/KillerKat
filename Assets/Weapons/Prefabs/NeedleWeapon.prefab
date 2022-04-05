@@ -50,7 +50,7 @@ MonoBehaviour:
   ItemID: 0
   PrimaryAttackRange: 1
   PrimaryAttackDamage: 10
-  PrimaryCooldown: 0.15
+  PrimaryCooldown: 0.2
   SecondaryAttackRange: 1
   SecondaryAttackDamage: 20
   SecondaryCooldown: 1

@@ -254,11 +254,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemID: 1
   PrimaryAttackRange: 1
-  PrimaryAttackDamage: 10
-  PrimaryCooldown: 0
+  PrimaryAttackDamage: 20
+  PrimaryCooldown: 1
   SecondaryAttackRange: 1
-  SecondaryAttackDamage: 20
-  SecondaryCooldown: 0
+  SecondaryAttackDamage: 40
+  SecondaryCooldown: 1
   HitSound:
   - {fileID: 8300000, guid: a5f6eee3355a8364293e34d7e77cf219, type: 3}
   - {fileID: 8300000, guid: 9a912ea7f6da8e348930218d335ced08, type: 3}
