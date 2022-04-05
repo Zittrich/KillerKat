@@ -1,5 +1,48 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &446178293996247986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2935113531313201188}
+  - component: {fileID: 4487236389457133193}
+  m_Layer: 0
+  m_Name: WeaponSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2935113531313201188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446178293996247986}
+  m_LocalRotation: {x: -0.25881916, y: 0, z: -0.9659258, w: -0}
+  m_LocalPosition: {x: 0, y: 0.06950001, z: 0}
+  m_LocalScale: {x: 0.025000002, y: 0.024999999, z: 0.025000002}
+  m_Children: []
+  m_Father: {fileID: 8729781457269036347}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: -330, z: 180}
+--- !u!114 &4487236389457133193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446178293996247986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e51ab6747c2f044cb0e20804258d8f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3332529214054600239
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,6 +236,7 @@ Transform:
   m_Children:
   - {fileID: 752213193706823917}
   - {fileID: 4588523446973031097}
+  - {fileID: 2935113531313201188}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 30, z: 180}
@@ -209,20 +253,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemID: 1
-  PrimaryAttackRange: 10
+  PrimaryAttackRange: 1
   PrimaryAttackDamage: 10
   PrimaryCooldown: 0
-  SecondaryAttackRange: 10
+  SecondaryAttackRange: 1
   SecondaryAttackDamage: 20
   SecondaryCooldown: 0
   HitSound:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: a5f6eee3355a8364293e34d7e77cf219, type: 3}
+  - {fileID: 8300000, guid: 9a912ea7f6da8e348930218d335ced08, type: 3}
+  - {fileID: 8300000, guid: 70a8f0e7d5df10344aecf62bef434db8, type: 3}
   MissSound:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 580c8fbbe06871146ad002c36a596211, type: 3}
+  - {fileID: 8300000, guid: 0d414af537d461f458eb304fe3435e06, type: 3}
+  - {fileID: 8300000, guid: 64f1ddb34ce16d848b54fac3065f54a6, type: 3}
 --- !u!82 &2173355429753738721
 AudioSource:
   m_ObjectHideFlags: 0

@@ -20,12 +20,14 @@ public class Weapon : MonoBehaviour
     private float _lastTime;
     private EnemyScript _thisEnemy;
     private AudioSource _audioSource;
+    private WeaponSource _weaponSource;
     private System.Random _random = new System.Random();
 
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _lastTime = float.MinValue;
+        _weaponSource = GetComponentInChildren<WeaponSource>();
     }
 
     public void PrimaryAttack()
@@ -34,7 +36,7 @@ public class Weapon : MonoBehaviour
         {
             _lastTime = Time.time;
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
+            if (Physics.Raycast(transform.position, _weaponSource.transform.TransformDirection(Vector3.forward), out hit,
                     PrimaryAttackRange))
             {
                 if (hit.transform.gameObject.GetComponent<EnemyScript>())
@@ -48,24 +50,24 @@ public class Weapon : MonoBehaviour
 
                     Debug.Log(_thisEnemy.HealthPoints);
 
-                    _audioSource.clip = HitSound[_random.Next(0, HitSound.Length - 1)];
+                    _audioSource.clip = HitSound[_random.Next(0, HitSound.Length)];
                     _audioSource.Play();
 
                     Debug.Log("Did Hit");
                 }
                 else
                 {
-                    _audioSource.clip = MissSound[_random.Next(0, MissSound.Length - 1)];
+                    _audioSource.clip = MissSound[_random.Next(0, MissSound.Length)];
                     _audioSource.Play();
                     Debug.Log("Did not Hit");
                 }
             }
             else
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white, 5);
+                Debug.DrawRay(transform.position, _weaponSource.transform.TransformDirection(Vector3.forward) * 1000, Color.white, 5);
                 Debug.Log("Did not Hit");
 
-                _audioSource.clip = MissSound[_random.Next(0, MissSound.Length - 1)];
+                _audioSource.clip = MissSound[_random.Next(0, MissSound.Length)];
                 _audioSource.Play();
             }
         }

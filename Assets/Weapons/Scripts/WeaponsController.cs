@@ -9,11 +9,12 @@ using UnityEngine;
 
 public class WeaponsController : MonoBehaviour
 {
-    [SerializeField] public List<Weapon> WeaponList;
+    public List<Weapon> WeaponList;
+    public AudioClip WeaponSwitchSound;
 
-    [SerializeField] internal string json;
 
     internal int _selectedWeapon;
+    internal AudioSource _audioSource;
     private GameObject _hand;
 
     void Start()
@@ -42,6 +43,8 @@ public class WeaponsController : MonoBehaviour
             weapon.gameObject.SetActive(false);
         }
         WeaponList[_selectedWeapon].gameObject.SetActive(true);
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -67,5 +70,8 @@ public class WeaponsController : MonoBehaviour
         WeaponList[_selectedWeapon].gameObject.SetActive(false);
         _selectedWeapon = (_selectedWeapon + 1) % WeaponList.Count;
         WeaponList[_selectedWeapon].gameObject.SetActive(true);
+
+        _audioSource.clip = WeaponSwitchSound;
+        _audioSource.Play();
     }
 }
