@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -28,6 +30,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
+        [SerializeField] private float dashTime;
+        [SerializeField] private float dashSpeed;
+        [SerializeField] private float dashDelay;
 
         private Camera m_Camera;
         private bool m_Jump;
@@ -42,6 +47,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        private float nextDash = 0f;
+        private bool dashing = false;
 
         // Use this for initialization
         private void Start()
@@ -71,8 +78,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
             {
-                StartCoroutine(m_JumpBob.DoBobCycle());
-                PlayLandingSound();
+                if (!dashing)
+                {
+                    StartCoroutine(m_JumpBob.DoBobCycle());
+                    PlayLandingSound();
+                }
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
@@ -82,6 +92,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            if (Input.GetButtonDown("Dash") && nextDash < Time.time)
+            {
+                Debug.Log("dash");
+                dashing = true;
+                nextDash = Time.time + dashDelay + dashTime;
+                StartCoroutine(dash(new Vector3(m_MoveDir.x, 0, m_MoveDir.z)));
+            }
         }
 
 
@@ -156,8 +174,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_NextStep = m_StepCycle + m_StepInterval;
+            if (!dashing)
+            {
+                PlayFootStepAudio();
+            }
 
-            PlayFootStepAudio();
         }
 
 
@@ -227,7 +248,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             // handle speed change to give an fov kick
             // only if the player is going to a run, is running and the fovkick is to be used
-            if (m_IsWalking != waswalking && m_UseFovKick && m_CharacterController.velocity.sqrMagnitude > 0)
+            if (m_IsWalking != waswalking && m_UseFovKick && m_CharacterController.velocity.sqrMagnitude > 0 && !dashing)
             {
                 StopAllCoroutines();
                 StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
@@ -255,6 +276,82 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+
+        private IEnumerator dash(Vector3 dashDirection)
+        {
+            float startTime = Time.time;
+            if (dashDirection.x * dashDirection.x + dashDirection.z * dashDirection.z > 0)
+            {
+                if (dashDirection.x > 0f)
+                {
+                    if (dashDirection.z > 0f)
+                    {
+                        dashDirection.x = 7.1f;
+                        dashDirection.z = 7.1f;
+                    }
+                    else if(dashDirection.z < 0f)
+                    {
+                        dashDirection.x = 7.1f;
+                        dashDirection.z = -7.1f;
+                    }
+                    else
+                    {
+                        dashDirection.x = 10f;
+                        dashDirection.z = 0f;
+                    }
+                }
+                else if(dashDirection.x < 0f)
+                {
+                    if (dashDirection.z > 0f)
+                    {
+                        dashDirection.x = -7.1f;
+                        dashDirection.z = 7.1f;
+                    }
+                    else if (dashDirection.z < 0f)
+                    {
+                        dashDirection.x = -7.1f;
+                        dashDirection.z = -7.1f;
+                    }
+                    else
+                    {
+                        dashDirection.x = -10f;
+                        dashDirection.z = 0f;
+                    }
+                }
+                else
+                {
+                    if (dashDirection.z > 0f)
+                    {
+                        dashDirection.x = 0f;
+                        dashDirection.z = 10f;
+                    }
+                    else
+                    {
+                        dashDirection.x = 0f;
+                        dashDirection.z = -10f;
+                    }
+                }
+            }
+            else
+            {
+                dashDirection = m_Camera.transform.forward * 10;
+                Debug.Log(m_Camera.transform.forward * 10);
+            }
+
+
+            while (Time.time < startTime + dashTime)
+
+            {
+
+                m_CharacterController.Move( dashDirection* dashSpeed * Time.deltaTime);
+
+                yield return null;
+
+            }
+
+            dashing = false;
+
         }
     }
 }
