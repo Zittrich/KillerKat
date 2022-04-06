@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    public int HealthPoints;
+    public float HealthPoints;
     public AudioClip DeathSound;
+    public ParticleSystem Blood;
 
     private AudioSource _audioSource;
 
