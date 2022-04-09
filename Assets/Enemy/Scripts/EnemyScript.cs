@@ -10,15 +10,16 @@ public class EnemyScript : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    void Start()
+    protected void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
-    public void Death()
+    public virtual void Death()
     {
         _audioSource.clip = DeathSound;
         _audioSource.Play();
 
+        Destroy(gameObject.GetComponentInParent<Transform>().gameObject);
         Destroy(gameObject);
     }
 }
