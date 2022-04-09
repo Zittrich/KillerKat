@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.28502667, g: 0.37139323, b: 0.49600998, a: 1}
+  m_IndirectSpecularColor: {r: 0.2850269, g: 0.3713935, b: 0.49601045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -239,9 +239,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 274704700}
     m_Modifications:
+    - target: {fileID: 137982826494224655, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 137982826494224655, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.11
+      objectReference: {fileID: 0}
     - target: {fileID: 536765378100859237, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 536765378100859237, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -249,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 536765378100859237, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.009
       objectReference: {fileID: 0}
     - target: {fileID: 536765378100859237, guid: cc0b51a20a8d5a24395bb089abe7a007, type: 3}
       propertyPath: m_LocalRotation.w
@@ -341,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPoints: 100
   DeathSound: {fileID: 8300000, guid: bd9566abdbf08834281bfb4ea8b92a5d, type: 3}
+  Blood: {fileID: 5267599551645187009, guid: afa80d9b7c07a6746b2d0c1f0a9d82eb, type: 3}
 --- !u!136 &883020151
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -631,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8729781457269036347, guid: d54300323d00a64468c6c04bf8baacf7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.07000017
       objectReference: {fileID: 0}
     - target: {fileID: 8729781457269036347, guid: d54300323d00a64468c6c04bf8baacf7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -639,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8729781457269036347, guid: d54300323d00a64468c6c04bf8baacf7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0089998245
       objectReference: {fileID: 0}
     - target: {fileID: 8729781457269036347, guid: d54300323d00a64468c6c04bf8baacf7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -791,6 +800,7 @@ GameObject:
   - component: {fileID: 2033728963}
   - component: {fileID: 2044990499}
   - component: {fileID: 2039731203}
+  - component: {fileID: 2034213349}
   - component: {fileID: 2037138051}
   - component: {fileID: 2034213348}
   - component: {fileID: 2034448387}
@@ -817,6 +827,23 @@ MonoBehaviour:
   - {fileID: 1533885897}
   - {fileID: 614671267}
   WeaponSwitchSound: {fileID: 0}
+--- !u!114 &2034213349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034213347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b8d62e8d5c41545bfad49fa756f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthPoints: 0
+  DeathSound: {fileID: 0}
+  Blood: {fileID: 0}
+  IsBlocking: 0
+  blockingFactor: 0
 --- !u!82 &2034448387
 AudioSource:
   m_ObjectHideFlags: 0

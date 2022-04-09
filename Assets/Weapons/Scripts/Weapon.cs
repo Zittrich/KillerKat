@@ -10,21 +10,23 @@ public class Weapon : MonoBehaviour
     public float PrimaryAttackRange;
     public int PrimaryAttackDamage;
     public float PrimaryCooldown;
+    public AudioClip[] PrimaryHitSound;
+    public AudioClip[] PrimaryMissSound;
 
     public float SecondaryAttackRange;
     public int SecondaryAttackDamage;
     public float SecondaryCooldown;
-
-    public AudioClip[] HitSound;
-    public AudioClip[] MissSound;
+    public AudioClip[] SecondaryHitSound;
+    public AudioClip[] SecondaryMissSound;
 
     private float _lastTime;
     private EnemyScript _thisEnemy;
     private AudioSource _audioSource;
     private WeaponSource _weaponSource;
-    private System.Random _random = new System.Random();
+    private ParticleSystem _thisBlood;
+    readonly System.Random _random = new System.Random();
 
-    void Start()
+    protected void Start()
     {
         _audioSource = GetComponent<AudioSource>();
         _lastTime = float.MinValue;
@@ -40,7 +42,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void PrimaryAttack()
+    public virtual void PrimaryAttack()
     {
         if(_lastTime + PrimaryCooldown <= Time.time)
         {
@@ -58,27 +60,24 @@ public class Weapon : MonoBehaviour
                     if (_thisEnemy.HealthPoints <= 0)
                         _thisEnemy.Death();
 
+                    PlaySound(PrimaryHitSound);
+
+                    _thisBlood = Instantiate(_thisEnemy.Blood, hit.point, _thisEnemy.Blood.transform.rotation, hit.transform);
+                    _thisBlood.Play();
+
                     Debug.Log(_thisEnemy.HealthPoints);
-
-                    _audioSource.clip = HitSound[_random.Next(0, HitSound.Length)];
-                    _audioSource.Play();
-
                     Debug.Log("Did Hit");
                 }
                 else
                 {
-                    _audioSource.clip = MissSound[_random.Next(0, MissSound.Length)];
-                    _audioSource.Play();
+                    PlaySound(PrimaryMissSound);
                     Debug.Log("Did not Hit");
                 }
             }
             else
             {
-                Debug.DrawRay(transform.position, _weaponSource.transform.TransformDirection(Vector3.forward) * 1000, Color.white, 5);
                 Debug.Log("Did not Hit");
-
-                _audioSource.clip = MissSound[_random.Next(0, MissSound.Length)];
-                _audioSource.Play();
+                PlaySound(PrimaryMissSound);
             }
         }
         else
@@ -87,7 +86,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void SecondaryAttack()
+    public virtual void SecondaryAttack()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, SecondaryAttackRange))
@@ -105,5 +104,16 @@ public class Weapon : MonoBehaviour
     private void CooldownTrigger()
     {
         Debug.Log(_lastTime + PrimaryCooldown - Time.time);
+    }
+
+    protected void PlaySound(AudioClip[] audioClip)
+    {
+        _audioSource.clip = audioClip[_random.Next(0, audioClip.Length)];
+        _audioSource.Play();
+    }
+    protected void PlaySound(AudioClip audioClip)
+    {
+        _audioSource.clip = audioClip;
+        _audioSource.Play();
     }
 }
