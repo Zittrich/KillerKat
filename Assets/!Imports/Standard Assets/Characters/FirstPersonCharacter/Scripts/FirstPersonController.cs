@@ -49,6 +49,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private AudioSource m_AudioSource;
         private float nextDash = 0f;
         private bool dashing = false;
+        private Vector3 dashDirectionU;
 
         // Use this for initialization
         private void Start()
@@ -98,7 +99,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Debug.Log("dash");
                 dashing = true;
                 nextDash = Time.time + dashDelay + dashTime;
-                StartCoroutine(dash(new Vector3(m_MoveDir.x, 0, m_MoveDir.z)));
+                StartCoroutine(dash(new Vector3(m_Input.x,0f,m_Input.y)));
             }
         }
 
@@ -123,6 +124,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
                                m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+
+            dashDirectionU = desiredMove;
 
             m_MoveDir.x = desiredMove.x*speed;
             m_MoveDir.z = desiredMove.z*speed;
@@ -280,17 +283,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private IEnumerator dash(Vector3 dashDirection)
         {
+            Debug.Log(dashDirection);
             float startTime = Time.time;
             if (dashDirection.x * dashDirection.x + dashDirection.z * dashDirection.z > 0)
             {
-                if (dashDirection.x > 0f)
+                if (dashDirection.x > 0.1f)
                 {
-                    if (dashDirection.z > 0f)
+                    if (dashDirection.z > 0.1f)
                     {
                         dashDirection.x = 7.1f;
                         dashDirection.z = 7.1f;
                     }
-                    else if(dashDirection.z < 0f)
+                    else if(dashDirection.z < -0.1f)
                     {
                         dashDirection.x = 7.1f;
                         dashDirection.z = -7.1f;
@@ -301,14 +305,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
                         dashDirection.z = 0f;
                     }
                 }
-                else if(dashDirection.x < 0f)
+                else if(dashDirection.x < -0.1f)
                 {
-                    if (dashDirection.z > 0f)
+                    if (dashDirection.z > 0.1f)
                     {
                         dashDirection.x = -7.1f;
                         dashDirection.z = 7.1f;
                     }
-                    else if (dashDirection.z < 0f)
+                    else if (dashDirection.z < -0.1f)
                     {
                         dashDirection.x = -7.1f;
                         dashDirection.z = -7.1f;
@@ -321,7 +325,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
                 else
                 {
-                    if (dashDirection.z > 0f)
+                    if (dashDirection.z > 0.1f)
                     {
                         dashDirection.x = 0f;
                         dashDirection.z = 10f;
@@ -332,19 +336,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
                         dashDirection.z = -10f;
                     }
                 }
+
+                dashDirection = transform.TransformPoint(dashDirection) - transform.position;
+
             }
             else
             {
                 dashDirection = m_Camera.transform.forward * 10;
-                Debug.Log(m_Camera.transform.forward * 10);
             }
-
-
+            Debug.Log(dashDirection);
             while (Time.time < startTime + dashTime)
-
             {
 
-                m_CharacterController.Move( dashDirection* dashSpeed * Time.deltaTime);
+                m_CharacterController.Move( dashDirection * dashSpeed * Time.deltaTime);
 
                 yield return null;
 
