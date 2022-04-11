@@ -12,6 +12,7 @@ public class MainMenuController : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
         Instantiate(GameHandler);
     }
 
